@@ -1,12 +1,10 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/contactsSlice';
+import { useSelector } from 'react-redux';
 import ContactItem from 'components/ContactItem/ContactItem';
 import styles from './ContactList.module.css';
 
-const ContactList = () => {
+const ContactList = ({ onDeleteContact }) => {
   const contacts = useSelector(state => state.contacts);
-  const dispatch = useDispatch();
   const filter = useSelector(state => state.filter);
   const filteredContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
@@ -18,7 +16,7 @@ const ContactList = () => {
         <ContactItem
           key={contact.id}
           contact={contact}
-          onDeleteContact={() => dispatch(deleteContact(contact.id))}
+          onDeleteContact={() => onDeleteContact(contact.id)}
         />
       ))}
     </ul>

@@ -1,30 +1,28 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice';
 import propTypes from 'prop-types';
 import styles from './ContactForm.module.css';
-import { nanoid } from 'nanoid';
 
-const ContactForm = () => {
+const ContactForm = ({ onAddContact }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const dispatch = useDispatch();
-
   const handleChange = event => {
     const { name, value } = event.target;
 
-    if (name === 'name') {
-      const cleanedName = value.replace(/[^a-zA-Z '-]/g, '');
-      setName(cleanedName);
-    } else if (name === 'number') {
-      const cleanedNumber = value.replace(/[^\d+() -]/g, '');
-      setNumber(cleanedNumber);
+    switch (name) {
+      case 'name':
+        setName(value.replace(/[^a-zA-Z '-]/g, ''));
+        break;
+      case 'number':
+        setNumber(value.replace(/[^\d+() -]/g, ''));
+        break;
+      default:
+        break;
     }
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(addContact({ id: nanoid(), name, number }));
+    onAddContact(name, number);
     setName('');
     setNumber('');
   };
